@@ -1,0 +1,26 @@
+services:
+     web:
+        build: ./frontend
+        container_name: react-c1
+        ports:
+           - "3000:3000"
+     app:
+        build: ./backend
+        container_name: api-c1
+        ports:
+           - "5000:5000"
+        depends_on:
+           - mysql
+     mysql:
+        build: ./mysql
+        container_name: db
+        ports:
+           - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: todo_db
+        volumes:
+            -mount_data:/data
+
+volumes:
+    mount_data: 
