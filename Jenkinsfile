@@ -2,22 +2,22 @@ pipeline{
    agent any
    stages{
      stage(build){
-       steps{
+       steps {
            echo "sucess"  
          }
      }
      stage(test){
-       steps{
+       steps {
          
          }
      }
      stage(artifacts){
-       steps{
+       steps {
          
          }
      }
      stage(deploy){
-       steps{
+       steps {
          
          }
      }
