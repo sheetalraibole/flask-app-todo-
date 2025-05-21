@@ -8,17 +8,17 @@ pipeline{
      }
      stage("test"){
        steps {
-         
+          echo "test"
          }
      }
      stage("artifacts"){
        steps {
-         
+          echo "ecr"
          }
      }
      stage("deploy"){
        steps {
-         
+         echo "deploy"
          }
      }
    }
