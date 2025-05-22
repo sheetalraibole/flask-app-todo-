@@ -4,7 +4,7 @@ pipeline{
       EMAIL_RECIPIENTS = 'syedabrarali346@gmail.com'
    }
  // Track stage statuses manually
-    def stageResults = [:]
+   def stageResults = [:]
 
     stages {
         stage('Validate') {
