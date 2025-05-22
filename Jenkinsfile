@@ -29,7 +29,7 @@ pipeline{
       always{
         script {
                 // Get stage information through the API (no special methods)
-                def buildUrl = "${env.JENKINS_URL}${env.BUILD_URL}api/json"
+                def buildUrl = "${env.JENKINS_URL}api/json"
                 def buildData = new groovy.json.JsonSlurper().parse(new URL(buildUrl))
                 
                 // Create stage report
