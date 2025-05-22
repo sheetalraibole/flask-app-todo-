@@ -42,12 +42,7 @@ pipeline{
                 </ul>
                 """
          emailext(subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}",
-                body: """<p>Build ${currentBuild.currentResult}: ${env.JOB_NAME} - Build #${env.BUILD_NUMBER}</p>
-                        <p>Check console output at <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
-                        <p>Build Stages:</p>
-                        """
-                  emailBody
-                  ,
+                body: emailBody,
                 to:EMAIL_RECIPIENTS,
                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
                  )
