@@ -27,25 +27,26 @@ pipeline{
    }
    post{
       always{
-         script{
-                def buildInfo = [
-                    "Job Name"    : env.JOB_NAME,
-                    "Build Number": env.BUILD_NUMBER,
-                    "Build Status": currentBuild.currentResult,
-                    "Build URL"   : env.BUILD_URL,
-                    "Duration"    : currentBuild.durationString
-                ]
-              def emailBody = """
-                <h1>Deployment Report</h1>
-                <ul>
-                    ${buildInfo.collect { "<li><b>${it.key}:</b> ${it.value}</li>" }.join('\n')}
-                </ul>
-                """
-         emailext(subject: "Jenkins Build ${currentBuild.currentResult}: Job ${env.JOB_NAME}",
-                body: emailBody,
-                to:EMAIL_RECIPIENTS,
-                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
-                 )
+        script {
+                // Get stage statuses (alternative method)
+                def stageStatuses = []
+                currentBuild.rawBuild.getStages().each { stage ->
+                    stageStatuses << "${stage.name}: ${stage.status}"
+                }
+                
+                emailext (
+                    subject: "Pipeline Status: ${currentBuild.currentResult}",
+                    body: """
+                    <h2>Pipeline Report</h2>
+                    <p><b>Overall Status:</b> ${currentBuild.currentResult}</p>
+                    <h3>Stage Results:</h3>
+                    <ul>
+                        ${stageStatuses.collect { "<li>${it}</li>" }.join('\n')}
+                    </ul>
+                    """,
+                    to:EMAIL_RECIPIENTS ,
+                    mimeType: 'text/html'
+                )
          cleanWs()
          }
       }
