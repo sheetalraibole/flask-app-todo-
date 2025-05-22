@@ -27,30 +27,20 @@ pipeline{
    }
    post{
       always{
-        script {
-                // Get stage information through the API (no special methods)
-                def buildUrl = "${env.JENKINS_URL}api/json"
-                def buildData = new groovy.json.JsonSlurper().parse(new URL(buildUrl))
-                
-                // Create stage report
-                def stageReport = buildData.stages.collect { stage ->
-                    "${stage.name}: ${stage.status}"
-                }.join('\n')
-                
-                emailext(
-                    to:EMAIL_RECIPIENTS ,
-                    subject: "Pipeline Status: ${currentBuild.currentResult}",
-                    body: """
-                    <h2>Pipeline Report</h2>
-                    <p><b>Overall Status:</b> ${currentBuild.currentResult}</p>
-                    <h3>Stage Results:</h3>
-                    <pre>${stageReport}</pre>
-                    <p><a href="${env.BUILD_URL}">View Full Build</a></p>
-                    """,
-                    mimeType: 'text/html'
-                )
+        emailext(
+                to: EMAIL_RECIPIENTS,
+                subject: "Deployment Status: ${currentBuild.currentResult}",
+                body: """
+                Deployment Report
+                ----------------
+                Job: ${env.JOB_NAME}
+                Build: ${env.BUILD_NUMBER}
+                Status: ${currentBuild.currentResult}
+                URL: ${env.BUILD_URL}
+                Duration: ${currentBuild.durationString}
+                """
+            )
          cleanWs()
-         }
       }
    }
 }
