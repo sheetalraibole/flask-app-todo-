@@ -1,12 +1,22 @@
-pipeline{
-   agent any
+//pipeline{
+   //agent any
    //environment{
       //EMAIL_RECIPIENTS = 'syedabrarali346@gmail.com'
    //}
  // Track stage statuses manually
-   def stageResults = [:]
-
+  pipeline {
+    agent any
+    
     stages {
+        stage('Initialize') {
+            steps {
+                script {
+                    // Initialize stage tracking map
+                    env.STAGE_RESULTS = '{}'
+                }
+            }
+        }
+        
         stage('Validate') {
             steps {
                 script {
@@ -15,10 +25,10 @@ pipeline{
                         // Add your validation checks here
                         validateParameters()
                         checkDependencies()
-                        stageResults['Validate'] = 'SUCCESS ✅'
+                        updateStageResult('Validate', 'SUCCESS ✅')
                         echo "Validation passed"
                     } catch (Exception e) {
-                        stageResults['Validate'] = 'FAILED ❌'
+                        updateStageResult('Validate', 'FAILED ❌')
                         error("Validation failed: ${e.message}")
                     }
                 }
@@ -32,10 +42,10 @@ pipeline{
                         echo "🏗️ Building application..."
                         // Your build commands here
                         //sh 'mvn clean package'
-                        stageResults['Build'] = 'SUCCESS ✅'
+                        updateStageResult('Build', 'SUCCESS ✅')
                         echo "Build successful"
                     } catch (Exception e) {
-                        stageResults['Build'] = 'FAILED ❌'
+                        updateStageResult('Build', 'FAILED ❌')
                         error("Build failed: ${e.message}")
                     }
                 }
@@ -52,10 +62,10 @@ pipeline{
                         echo "🧪 Running tests..."
                         // Your test commands here
                         //sh 'mvn test'
-                        stageResults['Test'] = 'SUCCESS ✅'
+                        updateStageResult('Test', 'SUCCESS ✅')
                         echo "Tests passed"
                     } catch (Exception e) {
-                        stageResults['Test'] = 'UNSTABLE ⚠️'
+                        updateStageResult('Test', 'UNSTABLE ⚠️')
                         unstable("Tests failed: ${e.message}")
                     }
                 }
@@ -71,11 +81,11 @@ pipeline{
                     try {
                         echo "🚀 Deploying application..."
                         // Your deploy commands here
-                        //sh './deploy.sh'
-                        stageResults['Deploy'] = 'SUCCESS ✅'
+                       // sh './deploy.sh'
+                        updateStageResult('Deploy', 'SUCCESS ✅')
                         echo "Deployment complete"
                     } catch (Exception e) {
-                        stageResults['Deploy'] = 'FAILED ❌'
+                        updateStageResult('Deploy', 'FAILED ❌')
                         error("Deployment failed: ${e.message}")
                     }
                 }
@@ -86,8 +96,8 @@ pipeline{
     post {
         always {
             script {
-                // Generate detailed report without API access
-                def report = generateReport(stageResults)
+                // Generate detailed report
+                def report = generateReport()
                 
                 // Archive and send report
                 writeFile file: 'deployment_report.txt', text: report
@@ -125,7 +135,15 @@ def checkDependencies() {
     // Add more dependency checks
 }
 
-def generateReport(stageResults) {
+def updateStageResult(stageName, status) {
+    def results = readJSON text: env.STAGE_RESULTS ?: '{}'
+    results[stageName] = status
+    env.STAGE_RESULTS = writeJSON returnText: true, json: results
+}
+
+def generateReport() {
+    def results = readJSON text: env.STAGE_RESULTS ?: '{}'
+    
     def report = """
     ╔══════════════════════════════════════╗
     ║        DEPLOYMENT EXECUTION REPORT   ║
@@ -139,7 +157,7 @@ def generateReport(stageResults) {
     STAGE RESULTS:
     """
     
-    stageResults.each { stage, status ->
+    results.each { stage, status ->
         report += "    ${stage.padRight(10)}: ${status}\n"
     }
     
