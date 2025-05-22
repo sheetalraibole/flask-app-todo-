@@ -1,8 +1,8 @@
 pipeline{
    agent any
-   environment{
-      EMAIL_RECIPIENTS = 'syedabrarali346@gmail.com'
-   }
+   //environment{
+      //EMAIL_RECIPIENTS = 'syedabrarali346@gmail.com'
+   //}
  // Track stage statuses manually
    def stageResults = [:]
 
