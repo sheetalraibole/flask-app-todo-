@@ -47,7 +47,7 @@ pipeline{
                     
                     // Send email
                     emailext(
-                        to: 'syedsyedsyed10001@gmail.com',
+                        to: EMAIL_RECIPIENTS,
                         subject: "Deployment Status: ${currentBuild.currentResult}",
                         body: emailContent,
                         mimeType: 'text/html'
@@ -58,7 +58,7 @@ pipeline{
                     
                     // Fallback simple email without API data
                     emailext(
-                        to: 'syedsyedsyed10001@gmail.com',
+                        to: EMAIL_RECIPIENTS,
                         subject: "Deployment Status: ${currentBuild.currentResult}",
                         body: """
                         Basic Deployment Report
