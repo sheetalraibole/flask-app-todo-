@@ -4,7 +4,43 @@
       //EMAIL_RECIPIENTS = 'syedabrarali346@gmail.com'
    //}
  // Track stage statuses manually
-  pipeline {
+pipeline{
+   agent{label ""}
+   stages{
+      stage("Build"){
+         
+      }
+      stage("Push to ECR"){
+         
+      }
+      stage("Deploy"){
+         
+      }
+      
+   }
+   post{
+      always{
+         emailext(
+                to: EMAIL_RECIPIENTS,
+                subject: "Deployment Status: ${currentBuild.currentResult}",
+                body: """
+                Deployment Report
+                ----------------
+                Job: ${env.JOB_NAME}
+                Build: ${env.BUILD_NUMBER}
+                Status: ${currentBuild.currentResult}
+                URL: ${env.BUILD_URL}
+                Duration: ${currentBuild.durationString}
+                """
+            )
+      }
+   }
+}  
+
+
+
+
+pipeline {
     agent any
     
     stages {
