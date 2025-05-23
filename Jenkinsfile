@@ -6,7 +6,7 @@
    //}
  // Track stage statuses manually
 pipeline{
-   agent{label ""}
+   agent any
     environment{
       EMAIL_RECIPIENTS = 'syedabrarali346@gmail.com'
         Tag = '${env.BUILD_NUMBER}'
