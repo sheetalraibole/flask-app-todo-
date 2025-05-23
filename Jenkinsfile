@@ -22,7 +22,7 @@ pipeline{
       stage("Push to ECR"){
          steps{
             sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 195275646708.dkr.ecr.ap-south-1.amazonaws.com"
-            sh "docker tag back-app:Tag 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:Tag"
+            sh "docker tag back-app:$(Tag) 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:$(Tag)"
             sh "docker push 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:Tag"
          }
       }
