@@ -20,7 +20,7 @@ services:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: todo_db
         volumes:
-            -mount_data:/var/lib/mysql
+            - mount_data:/var/lib/mysql
 
 volumes:
     mount_data: 
