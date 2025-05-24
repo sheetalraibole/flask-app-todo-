@@ -50,15 +50,16 @@ pipeline{
             aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 195275646708.dkr.ecr.ap-south-1.amazonaws.com
-            docker tag back-app 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:Tag
-            docker push 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:Tag
+            docker tag back-app 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:${env.BUILD_NUMBER}
+            docker push 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:${env.BUILD_NUMBER}
             '''
              }
          }
       }
       stage("Deploy"){
          steps{
-            sh "docker compose -d down && up"
+            sh "docker compose down"
+            sh "docker compose up -d"
          }
       }
       
