@@ -21,7 +21,7 @@ pipeline{
             sh"mv ./frontend/package.json ./newfrontend/"
             sh"mv ./frontend/dockerfile ./newfrontend/"
             sh"rm -r ./frontend"
-            sh"mkdir frontend"
+            //sh"mkdir frontend"
             sh"mv newfrontend frontend"
          }
       }
