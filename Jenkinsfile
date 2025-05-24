@@ -15,9 +15,12 @@ pipeline{
       stage("pre-build"){
          steps{
             sh"npx create-react-app newfrontend -y"
-            sh"cd newfrontend"
-            sh"npm install axios styled-components"
-            sh"cd .."
+            dir('newfrontend') {
+                sh 'npm install axios styled-components'
+            }
+            //sh"cd newfrontend"
+            //sh"npm install axios styled-components"
+            //sh"cd .."
             sh"rm ./newfrontend/src/App.js"
             //sh"rm ./newfrontend/package.json"
             sh"mv ./frontend/src/App.js ./newfrontend/src/"
