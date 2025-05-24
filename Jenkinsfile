@@ -22,7 +22,7 @@ pipeline{
             sh"mv ./frontend/dockerfile ./newfrontend/"
             sh"rm -r ./frontend"
             sh"mkdir frontend"
-            sh"mv ./newfrontend ./frontend"
+            sh"mv newfrontend frontend"
          }
       }
       stage("Build"){
