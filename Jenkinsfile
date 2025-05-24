@@ -11,7 +11,7 @@ pipeline{
    agent any
     environment{
       EMAIL_RECIPIENTS = 'syedabrarali346@gmail.com'
-      Tag = '${env.BUILD_NUMBER}'
+      //Tag = '${env.BUILD_NUMBER}'
    }
    stages{
       stage("pre-build"){
