@@ -11,7 +11,7 @@ export default function TodoApp() {
   }, []);
 
   const fetchTasks = async () => {
-    const response = await axios.get("http://localhost:5000/tasks");"in ec2 replace localhost with public ip of ec2"
+    const response = await axios.get("http://localhost:5000/tasks");//in ec2 replace localhost with public ip of ec2
     setTasks(response.data);
   };
 
