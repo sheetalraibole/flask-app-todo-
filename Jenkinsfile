@@ -9,7 +9,7 @@ pipeline{
    agent any
     environment{
       EMAIL_RECIPIENTS = 'syedabrarali346@gmail.com'
-        Tag = '${env.BUILD_NUMBER}'
+      Tag = '${env.BUILD_NUMBER}'
    }
    stages{
       stage("pre-build"){
@@ -40,9 +40,19 @@ pipeline{
       }
       stage("Push to ECR"){
          steps{
-            sh "aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 195275646708.dkr.ecr.ap-south-1.amazonaws.com"
-            sh "docker tag back-app:${Tag} 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:${Tag}"
-            sh "docker push 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:Tag"
+             withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'aws-cred',  // Your Jenkins credential ID
+            usernameVariable: 'AWS_ACCESS_KEY_ID',
+            passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+        ]]) {
+            sh '''
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 195275646708.dkr.ecr.ap-south-1.amazonaws.com
+            docker tag back-app:${Tag} 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:${Tag}
+            docker push 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:${Tag}
+            '''
          }
       }
       stage("Deploy"){
