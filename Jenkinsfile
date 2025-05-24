@@ -5,6 +5,8 @@
        // Tag = ${env.BUILD_NUMBER}'
    //}
  // Track stage statuses manually
+//aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+            //aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 pipeline{
    agent any
     environment{
@@ -40,15 +42,15 @@ pipeline{
       }
       stage("Push to ECR"){
          steps{
-             withCredentials([usernamePassword(
-            
+             withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
             credentialsId: 'aws-cred',  // Your Jenkins credential ID
             usernameVariable: 'AWS_ACCESS_KEY_ID',
             passwordVariable: 'AWS_SECRET_ACCESS_KEY'
-        )]) {
+        ]]) {
             sh '''
-            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            
+            
             aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 195275646708.dkr.ecr.ap-south-1.amazonaws.com
             docker tag back-app 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:${env.BUILD_NUMBER}
             docker push 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:${env.BUILD_NUMBER}
