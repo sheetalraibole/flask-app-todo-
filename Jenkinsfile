@@ -16,7 +16,7 @@ pipeline{
          steps{
             sh"npx create-react-app newfrontend -y"
             sh"cd newfrontend"
-            sh"npm install axios styled-components react-router-dom"
+            sh"npm install axios styled-components"
             sh"cd .."
             sh"rm ./newfrontend/src/App.js"
             //sh"rm ./newfrontend/package.json"
