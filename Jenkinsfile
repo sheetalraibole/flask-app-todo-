@@ -45,8 +45,8 @@ pipeline{
              withCredentials([[
             $class: 'AmazonWebServicesCredentialsBinding',
             credentialsId: 'new-awsCred',  // Your Jenkins credential ID
-            usernameVariable: 'AWS_ACCESS_KEY_ID',
-            passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]]) {
             sh '''
             BUILD_NUMBER=${env.BUILD_NUMBER}
