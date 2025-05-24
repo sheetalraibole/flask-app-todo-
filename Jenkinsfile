@@ -15,10 +15,13 @@ pipeline{
       stage("pre-build"){
          steps{
             sh"npx create-react-app newfrontend -y"
+            sh"cd newfrontend"
+            sh"npm install axios styled-components react-router-dom"
+            sh"cd .."
             sh"rm ./newfrontend/src/App.js"
-            sh"rm ./newfrontend/package.json"
+            //sh"rm ./newfrontend/package.json"
             sh"mv ./frontend/src/App.js ./newfrontend/src/"
-            sh"mv ./frontend/package.json ./newfrontend/"
+            //sh"mv ./frontend/package.json ./newfrontend/"
             sh"mv ./frontend/dockerfile ./newfrontend/"
             sh"rm -r ./frontend"
             //sh"mkdir frontend"
