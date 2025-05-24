@@ -53,6 +53,7 @@ pipeline{
             docker tag back-app:${Tag} 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:${Tag}
             docker push 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:${Tag}
             '''
+             }
          }
       }
       stage("Deploy"){
