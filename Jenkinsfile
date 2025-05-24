@@ -12,6 +12,12 @@ pipeline{
         Tag = '${env.BUILD_NUMBER}'
    }
    stages{
+      stage("pre-build"){
+         steps{
+            sh"npx create-react-app newfrontend -y"
+            sh"rm ./newfrontend/src/App.js"
+         }
+      }
       stage("Build"){
          steps{
             sh "docker build  -t front-app ./frontend"
