@@ -25,7 +25,7 @@ pipeline{
             //sh"cd .."
             sh"rm ./newfrontend/src/App.js"
             //sh"rm ./newfrontend/package.json"
-            sh"mv ./frontend/src/App.js ./newfrontend/src/"
+            sh"mv ./frontend/App.js ./newfrontend/src/"
             //sh"mv ./frontend/package.json ./newfrontend/"
             sh"mv ./frontend/dockerfile ./newfrontend/"
             sh"rm -r ./frontend"
