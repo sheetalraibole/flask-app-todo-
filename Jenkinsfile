@@ -44,14 +44,15 @@ pipeline{
          steps{
              withCredentials([[
             $class: 'AmazonWebServicesCredentialsBinding',
-            credentialsId: 'new-awsCred',  // Your Jenkins credential ID
+            credentialsId: 'awscred',  // Your Jenkins credential ID
             accessKeyVariable: 'AWS_ACCESS_KEY_ID',
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]]) {
             sh '''
-            aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 195275646708.dkr.ecr.ap-south-1.amazonaws.com
-            docker tag back-app 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:${BUILD_NUMBER}
-            docker push 195275646708.dkr.ecr.ap-south-1.amazonaws.com/syed/repo-new:${BUILD_NUMBER}
+            aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 884348118885.dkr.ecr.ap-south-1.amazonaws.com
+            docker tag back-app 884348118885.dkr.ecr.ap-south-1.amazonaws.com/sheetal/repo-new:${BUILD_NUMBER}
+         docker push 884348118885.dkr.ecr.ap-south-1.amazonaws.com/sheetal/repo-new:${BUILD_NUMBER}
+           
             '''
              }
          }
