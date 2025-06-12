@@ -10,7 +10,7 @@
 pipeline{
    agent any
     environment{
-      EMAIL_RECIPIENTS = 'syedabrarali346@gmail.com'
+      EMAIL_RECIPIENTS = 'sheetalraibole6@gmail.com'
       //Tag = '${env.BUILD_NUMBER}'
    }
    stages{
